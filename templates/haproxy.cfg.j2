@@ -1,0 +1,41 @@
+frontend kube-ssl
+  bind *:443
+  mode tcp
+  option tcplog
+  timeout client 25s
+  default_backend ssl-backend
+
+frontend kube-http
+  bind *:80
+  mode tcp
+  option tcplog
+  timeout client 25s
+  default_backend http-backend
+
+backend ssl-backend
+  mode tcp
+  option tcplog
+  option log-health-checks
+  option redispatch
+  log global
+  balance roundrobin
+  timeout connect 5s
+  timeout server 25s
+  #below template
+  {% for host in groups["vpn"] %}
+  server node{{loop.index}} {{host}}:31443 check inter 2s send-proxy
+  {% endfor %}
+
+backend http-backend
+  mode tcp
+  option tcplog
+  option log-health-checks
+  option redispatch
+  log global
+  balance roundrobin
+  timeout connect 5s
+  timeout server 25m
+  #below template
+  {% for host in groups["vpn"] %}
+  server node{{loop.index}} {{host}}:31080 check inter 2s send-proxy
+  {% endfor %}

@@ -1,0 +1,50 @@
+- name: install haproxy
+  apt: 
+    name: haproxy
+    state: latest
+  tags:
+    - haproxy
+
+- name: Create ha-proxy configuration directory
+  file:
+    dest: "/etc/haproxy/"
+    owner: root
+    group: root
+    state: directory
+    mode: 0700
+  tags:
+    - haproxy
+
+- name: UFW - Allow configured networks to communicate
+  ufw:
+    rule: allow
+    direction: in
+    port: "{{ item.port }}"
+    if: "{{ item.if }}"
+  with_items:
+    - { if: eth0, port: 80 }
+    - { if: wg0, port: 31080 }
+    - { if: eth0, port: 443 }
+    - { if: wg0, port: 31443 }
+  tags:
+    - haproxy
+
+- name: Generate ha-proxy configuration file
+  template:
+    src: haproxy.cfg.j2
+    dest: "/etc/haproxy/haproxy.cfg"
+    owner: root
+    group: root
+    mode: 0600
+  tags:
+    - haproxy
+  notify:
+    - restart haproxy
+
+- name: Start and enable haproxy service
+  service:
+    name: "haproxy"
+    state: started
+    enabled: yes
+  tags:
+    - haproxy
