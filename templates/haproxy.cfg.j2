@@ -23,7 +23,7 @@ backend ssl-backend
   timeout server 25s
   #below template
   {% for host in groups["vpn"] %}
-  server node{{loop.index}} {{host}}:31443 check inter 2s send-proxy
+  server node{{loop.index}} {{host}}:32443 check inter 2s send-proxy
   {% endfor %}
 
 backend http-backend
@@ -37,5 +37,5 @@ backend http-backend
   timeout server 25m
   #below template
   {% for host in groups["vpn"] %}
-  server node{{loop.index}} {{host}}:31080 check inter 2s send-proxy
+  server node{{loop.index}} {{host}}:32080 check inter 2s send-proxy
   {% endfor %}
