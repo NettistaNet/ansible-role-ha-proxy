@@ -1,0 +1,15 @@
+galaxy_info:
+  author: Sascha Retter
+  description: Ansible role to setup ha-proxy.
+
+
+  license: GPL-2.0
+
+  min_ansible_version: 2.9
+
+  platforms:
+  - name: Debian
+    versions:
+      - Buster (10.x)
+
+  galaxy_tags:
