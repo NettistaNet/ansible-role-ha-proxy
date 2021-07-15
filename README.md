@@ -18,9 +18,9 @@ This role was created for Debian based linux distributions.
 Role Variables
 ----
 
-Only the hosts of group _[vpn]_ are used. Currently no other variables are supported.
+The hosts of group _[vpn]_ are used. 
 
-The ha-proxy distributes load to all hosts of group _[vpn]_. 
+The ha-proxy distributes load to all hosts of group _[vpn]_ by the default port 31443 is used for ssl and 31080 for non-ssl traffic.
 
 
 Example Playbook

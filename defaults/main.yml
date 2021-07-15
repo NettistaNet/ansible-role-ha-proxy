@@ -1,2 +1,4 @@
 ---
 # defaults file for ansible-role-ha-proxy
+ssl_port: 31443
+port: 31080
